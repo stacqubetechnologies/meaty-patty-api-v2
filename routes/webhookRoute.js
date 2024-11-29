@@ -1,7 +1,7 @@
 // routes/paymentRoutes.js
 const express = require('express');
 const router = express.Router();
-
+const SECRET = 'a068e11f745672ec531faf1ec1fc4ff1b529b3a12e37e114aa87284b33fdbe007890e5b601c14f2b8e66886a42b6ac51c1825c44613b75435073e228820d909d';
 
 
 router.post('/order-webhook', async (req,res)=> {

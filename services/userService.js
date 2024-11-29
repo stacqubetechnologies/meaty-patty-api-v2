@@ -8,7 +8,7 @@ const databases = new Databases(client);
 const account = new Account(client);
 
 
-exports.createUser = async (email, password, firstName, lastName, mobileNo, homePhone, postalCode, houseAppart, city, street) => {
+exports.createUser = async (email, password, firstName, lastName, mobileNo, homePhone, postalCode, houseAppart, city, street,lat,lng) => {
     try {
         const user = await account.create(ID.unique(), email, password, `${firstName} ${lastName}`);
         await databases.createDocument(
@@ -35,6 +35,8 @@ exports.createUser = async (email, password, firstName, lastName, mobileNo, home
                 HouseAppart: houseAppart,
                 City: city,
                 Street: street,
+                Lat:lat,
+                Long:lng
             }
         );
         return { success: true, user };

@@ -5,9 +5,9 @@ const jwt = require('jsonwebtoken');
 
 // Register User Controller
 exports.registerUser = async (req, res) => {
-    const { email, password, firstName,lastName,mobileNo,homePhone,postalCode,houseAppart,city,street,userId } = req.body;
+    const { email, password, firstName,lastName,mobileNo,homePhone,postalCode,houseAppart,city,street,userId,lat,lng } = req.body;
     
-    const result = await authService.createUser(email, password, firstName,lastName,mobileNo,homePhone,postalCode,houseAppart,city,street);
+    const result = await authService.createUser(email, password, firstName,lastName,mobileNo,homePhone,postalCode,houseAppart,city,street,lat,lng);
 
     if (result.success) {
         res.status(201).json({
