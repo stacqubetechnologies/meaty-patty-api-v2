@@ -1,4 +1,4 @@
-const { Databases } = require('appwrite'); // Correct class name
+const { Databases, Query } = require('appwrite'); // Correct class name
 const { client } = require('../config/appwrite'); // Destructure client from the config file
 
 const databases = new Databases(client);
@@ -7,7 +7,10 @@ exports.fetchMenu = async () => {
     try {
         const response = await databases.listDocuments(
             '6743e5aa002d92d243ac',
-            '6743e5b80016f581155a'
+            '6743e5b80016f581155a',
+            [
+                Query.limit(100),  // Fetch up to 100 documents
+            ]
         );
 
         // Assuming response.documents contains an array of the raw menu data
@@ -20,7 +23,7 @@ exports.fetchMenu = async () => {
                 FoodItemName: name,
                 Description: description,
                 Price: price,
-                $id,
+                $id
             } = item;
 
             // Check if the category already exists
@@ -46,6 +49,8 @@ exports.fetchMenu = async () => {
 
             return categories;
         }, []);
+
+        console.log(foodCategories)
 
         return foodCategories;
     } catch (error) {
