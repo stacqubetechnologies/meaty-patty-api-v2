@@ -1,19 +1,19 @@
-const { Databases, Account, ID  } = require('appwrite'); 
-const { client } = require('../config/appwrite'); 
-const jwt = require('jsonwebtoken'); 
+const { Databases, Account, ID } = require('appwrite');
+const { client } = require('../config/appwrite');
+const jwt = require('jsonwebtoken');
 const sdk = require('node-appwrite');
-require('dotenv').config(); 
+require('dotenv').config();
 
 const databases = new Databases(client);
 const account = new Account(client);
 
 
-exports.createUser = async (email, password, firstName,lastName,mobileNo,homePhone,postalCode,houseAppart,city,street) => {
+exports.createUser = async (email, password, firstName, lastName, mobileNo, homePhone, postalCode, houseAppart, city, street) => {
     try {
         const user = await account.create(ID.unique(), email, password, `${firstName} ${lastName}`);
         await databases.createDocument(
-            '6743e5aa002d92d243ac', 
-            '6745e0a1000a7c84f409', 
+            '6743e5aa002d92d243ac',
+            '6745e0a1000a7c84f409',
             'unique()',
             {
                 FirstName: firstName,
@@ -22,12 +22,12 @@ exports.createUser = async (email, password, firstName,lastName,mobileNo,homePho
                 MobileNo: '+91' + mobileNo,  // Add +91 prefix to mobile number
                 HomePhone: homePhone,
                 UserId: user.$id
-              }
-           
-          );
-          await databases.createDocument(
-            '6743e5aa002d92d243ac', 
-            '67469ff400226044f57d', 
+            }
+
+        );
+        await databases.createDocument(
+            '6743e5aa002d92d243ac',
+            '67469ff400226044f57d',
             ID.unique(),
             {
                 UserId: user.$id,
@@ -52,14 +52,14 @@ exports.loginUser = async (email, password) => {
 
     try {
         const session = await account.createEmailPasswordSession(email, password);
-        
+
         // Correct query format with single quotes around the userId value
         const userDetails = await databases.listDocuments(
             '6743e5aa002d92d243ac',  // Database ID
             '6745e0a1000a7c84f409',  // Collection ID
         );
 
-        const user = userDetails.documents.find(doc=>doc.UserId === session.userId)
+        const user = userDetails.documents.find(doc => doc.UserId === session.userId)
 
 
 
@@ -71,8 +71,8 @@ exports.loginUser = async (email, password) => {
             sessionId: session.$id,
             expiry: session.expire,
         },
-        process.env.JWT_SECRET,
-        { expiresIn: '1h' });
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' });
 
         return { success: true, token, session, user };
     } catch (error) {
@@ -94,12 +94,12 @@ exports.validateSession = async () => {
 };
 
 
-exports.addAddress = async (userId, postalCode, houseAppart, city, street) => {
-    console.log(userId, postalCode, houseAppart, city, street)
+exports.addAddress = async (userId, postalCode, houseAppart, city, street, lat, long) => {
+
     try {
         await databases.createDocument(
-            '6743e5aa002d92d243ac', 
-            '67469ff400226044f57d', 
+            '6743e5aa002d92d243ac',
+            '67469ff400226044f57d',
             ID.unique(),
             {
                 UserId: userId,
@@ -107,6 +107,8 @@ exports.addAddress = async (userId, postalCode, houseAppart, city, street) => {
                 HouseAppart: houseAppart,
                 City: city,
                 Street: street,
+                Lat: lat,
+                Long: long
             }
         );
         return { success: true };
