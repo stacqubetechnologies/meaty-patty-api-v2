@@ -95,6 +95,7 @@ exports.validateSession = async () => {
 
 
 exports.addAddress = async (userId, postalCode, houseAppart, city, street) => {
+    console.log(userId, postalCode, houseAppart, city, street)
     try {
         await databases.createDocument(
             '6743e5aa002d92d243ac', 

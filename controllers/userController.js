@@ -68,7 +68,7 @@ exports.validateSession = async (req, res) => {
 
 exports.addAddressController = async (req, res) => {
     const { userId, postalCode, houseAppart, city, street } = req.body;
-
+    console.log(req.body)
     // Validate incoming data
     if (!userId || !postalCode || !houseAppart || !city || !street) {
         return res.status(400).json({ success: false, error: 'All fields are required' });
@@ -76,7 +76,7 @@ exports.addAddressController = async (req, res) => {
 
     try {
         // Call the addAddress service
-        const result = await authService(userId, postalCode, houseAppart, city, street);
+        const result = await authService.addAddress(userId, postalCode, houseAppart, city, street);
 
         if (result.success) {
             return res.status(201).json({ success: true, message: 'Address added successfully' });
