@@ -16,7 +16,7 @@ router.post('/order-webhook', async (req,res)=> {
         const event = req.body.events;
        
         if (event.includes('databases.collections.documents.create')) {
-            console.log('New Order Created:');
+
 
             // Call function to send email notification
             // await sendEmail(payload);

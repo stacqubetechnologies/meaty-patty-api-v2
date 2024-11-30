@@ -51,7 +51,7 @@ exports.fetchMenu = async () => {
             return categories;
         }, []);
 
-        console.log(foodCategories)
+
 
         return foodCategories;
     } catch (error) {
@@ -68,7 +68,7 @@ exports.createMenu = async (data) => {
         if (!data) {
             throw new Error('Menu data is missing');
         }
-        console.log('Menu Data:', data);
+
         const response = await databases.createDocument(
             '6743e5aa002d92d243ac',
             '6743e5b80016f581155a',

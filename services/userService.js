@@ -8,7 +8,7 @@ const databases = new Databases(client);
 const account = new Account(client);
 
 
-exports.createUser = async (email, password, firstName, lastName, mobileNo, homePhone, postalCode, houseAppart, city, street) => {
+exports.createUser = async (email, password, firstName, lastName, mobileNo, postalCode, houseAppart, city, street) => {
     try {
         const user = await account.create(ID.unique(), email, password, `${firstName} ${lastName}`);
         await databases.createDocument(
@@ -20,7 +20,6 @@ exports.createUser = async (email, password, firstName, lastName, mobileNo, home
                 LastName: lastName,
                 Email: email,
                 MobileNo: '+91' + mobileNo,  // Add +91 prefix to mobile number
-                HomePhone: homePhone,
                 UserId: user.$id
             }
 
@@ -64,7 +63,7 @@ exports.loginUser = async (email, password) => {
 
 
 
-        console.log(user);
+
 
         const token = jwt.sign({
             userId: session.userId,

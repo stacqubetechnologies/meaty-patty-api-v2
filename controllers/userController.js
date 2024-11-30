@@ -5,9 +5,9 @@ const jwt = require('jsonwebtoken');
 
 // Register User Controller
 exports.registerUser = async (req, res) => {
-    const { email, password, firstName,lastName,mobileNo,homePhone,postalCode,houseAppart,city,street,userId } = req.body;
+    const { email, password, firstName,lastName,mobileNo,postalCode,houseAppart,city,street,userId } = req.body;
     
-    const result = await authService.createUser(email, password, firstName,lastName,mobileNo,homePhone,postalCode,houseAppart,city,street);
+    const result = await authService.createUser(email, password, firstName,lastName,mobileNo,postalCode,houseAppart,city,street);
 
     if (result.success) {
         res.status(201).json({
@@ -29,7 +29,7 @@ exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
     const result = await authService.loginUser(email, password);
     if (result.success) {
-        console.log(result)
+
         res.status(200).json({
             message: 'Login successful',
             token: result.token,

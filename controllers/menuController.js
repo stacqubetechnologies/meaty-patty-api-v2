@@ -13,7 +13,7 @@ exports.getMenu = async (req, res) => {
 exports.createMenu = async (req, res) => {
     try {
         const {CategoryName, FoodItemName, Description, Price } = req.body;
-        console.log(Price)
+
         if (!CategoryName || !FoodItemName ) {
             return res.status(400).json({ error: 'CategoryName, FoodItemName, and Price are required' });
         }
