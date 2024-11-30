@@ -37,12 +37,13 @@ exports.fetchMenu = async () => {
                 });
                 categoryIndex = categories.length - 1; // Update index to new category
             }
+            const formattedPrice = parseFloat(price).toFixed(2);
 
             // Add the food item to the respective category
             categories[categoryIndex].foods.push({
                 name,
                 description,
-                price,
+                price: formattedPrice, // Use the formatted price
                 quantity: 0, // Default quantity
                 image: "", // Default or replace with an actual field if available
             });
