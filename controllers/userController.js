@@ -3,26 +3,36 @@ const authService = require('../services/userService');
 require('dotenv').config();
 const jwt = require('jsonwebtoken'); 
 
-// Register User Controller
 exports.registerUser = async (req, res) => {
-    const { email, password, firstName,lastName,mobileNo,postalCode,houseAppart,city,street,userId } = req.body;
-    
-    const result = await authService.createUser(email, password, firstName,lastName,mobileNo,postalCode,houseAppart,city,street);
+    const { email, password, firstName, lastName, mobileNo, postalCode, houseAppart, city, street, userId } = req.body;
 
-    if (result.success) {
-        res.status(201).json({
-            message: 'User created successfully',
-           
-            user: {
-                id: result.user.$id,
-                email: result.user.email,
-                name: result.user.name,
-            },
-        });
-    } else {
-        res.status(400).json({ error: result.error });
+    // Validate required fields
+    if (!email || !password || !firstName || !lastName || !mobileNo || !postalCode || !houseAppart || !city || !street) {
+        return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    
+    try {
+        const result = await authService.createUser(email, password, firstName, lastName, mobileNo, postalCode, houseAppart, city, street);
+
+        if (result.success) {
+            res.status(201).json({
+                message: 'User created successfully',
+                user: {
+                    id: result.user.$id,
+                    email: result.user.email,
+                    name: result.user.name,
+                },
+            });
+        } else {
+            res.status(400).json({ error: result.error });
+        }
+    } catch (error) {
+        console.error('Error creating user:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 };
+
 
 // Login User Controller
 exports.loginUser = async (req, res) => {
