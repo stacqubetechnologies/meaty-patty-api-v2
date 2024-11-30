@@ -8,7 +8,7 @@ const databases = new Databases(client);
 const account = new Account(client);
 
 
-exports.createUser = async (email, password, firstName, lastName, mobileNo, homePhone, postalCode, houseAppart, city, street,lat,lng) => {
+exports.createUser = async (email, password, firstName, lastName, mobileNo, homePhone, postalCode, houseAppart, city, street) => {
     try {
         const user = await account.create(ID.unique(), email, password, `${firstName} ${lastName}`);
         await databases.createDocument(
@@ -35,8 +35,7 @@ exports.createUser = async (email, password, firstName, lastName, mobileNo, home
                 HouseAppart: houseAppart,
                 City: city,
                 Street: street,
-                Lat:lat,
-                Long:lng
+            
             }
         );
         return { success: true, user };
@@ -96,7 +95,7 @@ exports.validateSession = async () => {
 };
 
 
-exports.addAddress = async (userId, postalCode, houseAppart, city, street, lat, long) => {
+exports.addAddress = async (userId, postalCode, houseAppart, city, street) => {
 
     try {
         await databases.createDocument(
@@ -109,8 +108,7 @@ exports.addAddress = async (userId, postalCode, houseAppart, city, street, lat, 
                 HouseAppart: houseAppart,
                 City: city,
                 Street: street,
-                Lat: lat,
-                Long: long
+              
             }
         );
         return { success: true };
