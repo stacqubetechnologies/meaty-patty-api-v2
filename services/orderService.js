@@ -151,8 +151,8 @@ exports.CreateOrderData = async (data) => {
                 ItemID: item.ItemID,
                 FoodItemName: item.FoodItemName,
                 Quantity: item.Quantity,
-                TotalPrice: item.TotalPrice,
-                Price: item.Price,
+                TotalPrice: parseFloat(item.TotalPrice),  // Ensure it's a float
+        Price: parseFloat(item.Price),            // Ensure it's a float
                 Customization: item.Customization,
                 OrderID: data.OrderID
             };
@@ -166,6 +166,7 @@ exports.CreateOrderData = async (data) => {
         const mailOptions = {
             from: 'Restaurant Orders" order@meatypatty.in',
             to: 'meatypattythorne@gmail.com', // Email address of the restaurant
+            // to: 'adithyainfo811@gmail.com', // Email address of the restaurant
             subject: `New Order - ${data.OrderID}`,
             html: emailHTML,
         };
