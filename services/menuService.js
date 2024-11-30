@@ -16,37 +16,40 @@ exports.fetchMenu = async () => {
         // Assuming response.documents contains an array of the raw menu data
         const rawMenuData = response.documents;
 
-        // Transform the data into the desired structure
+        // Filter and transform the data into the desired structure
         const foodCategories = rawMenuData.reduce((categories, item) => {
-            const {
-                CategoryName: category,
-                FoodItemName: name,
-                Description: description,
-                Price: price,
-                $id
-            } = item;
+            // Only include items with Status = True
+            if (item.Status === true) {
+                const {
+                    CategoryName: category,
+                    FoodItemName: name,
+                    Description: description,
+                    Price: price,
+                    $id
+                } = item;
 
-            // Check if the category already exists
-            let categoryIndex = categories.findIndex(cat => cat.category === category);
+                // Check if the category already exists
+                let categoryIndex = categories.findIndex(cat => cat.category === category);
 
-            // If the category doesn't exist, create it
-            if (categoryIndex === -1) {
-                categories.push({
-                    category,
-                    foods: [],
+                // If the category doesn't exist, create it
+                if (categoryIndex === -1) {
+                    categories.push({
+                        category,
+                        foods: [],
+                    });
+                    categoryIndex = categories.length - 1; // Update index to new category
+                }
+                const formattedPrice = parseFloat(price).toFixed(2);
+
+                // Add the food item to the respective category
+                categories[categoryIndex].foods.push({
+                    name,
+                    description,
+                    price: formattedPrice, // Use the formatted price
+                    quantity: 0, // Default quantity
+                    image: "", // Default or replace with an actual field if available
                 });
-                categoryIndex = categories.length - 1; // Update index to new category
             }
-            const formattedPrice = parseFloat(price).toFixed(2);
-
-            // Add the food item to the respective category
-            categories[categoryIndex].foods.push({
-                name,
-                description,
-                price: formattedPrice, // Use the formatted price
-                quantity: 0, // Default quantity
-                image: "", // Default or replace with an actual field if available
-            });
 
             return categories;
         }, []);
@@ -59,7 +62,6 @@ exports.fetchMenu = async () => {
         throw error;
     }
 };
-
 
 
 exports.createMenu = async (data) => {
