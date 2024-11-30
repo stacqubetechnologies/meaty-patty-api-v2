@@ -5,6 +5,8 @@ const printer = require('node-printer');
 const fs = require('fs');
 const databases = new Databases(client);
 const nodemailer = require('nodemailer');
+require('dotenv').config(); 
+
 
 exports.getAllOrderDetails = async () => {
     try{
@@ -27,8 +29,8 @@ const transporter = nodemailer.createTransport({
     port: 465, // Use port 465 for SSL
     secure: true,  // 'true' for SSL, 'false' for TLS
     auth: {
-        user: 'order@meatypatty.in', // Replace with your email
-        pass: '7S/SY2MRzly', // Replace with your email password or app password
+        user: process.env.SMTP_EMAIL, // Replace with your email
+        pass: process.env.SMTP_PASS, // Replace with your email password or app password
     },
 });
 
@@ -163,7 +165,7 @@ exports.CreateOrderData = async (data) => {
         // Send the email to restaurant
         const mailOptions = {
             from: 'Restaurant Orders" order@meatypatty.in',
-            to: 'adithyainfo811@gmail.com', // Email address of the restaurant
+            to: 'meatypattythorne@gmail.com', // Email address of the restaurant
             subject: `New Order - ${data.OrderID}`,
             html: emailHTML,
         };
