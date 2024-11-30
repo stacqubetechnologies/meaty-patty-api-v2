@@ -19,7 +19,7 @@ exports.createUser = async (email, password, firstName, lastName, mobileNo, post
                 FirstName: firstName,
                 LastName: lastName,
                 Email: email,
-                MobileNo: '+91' + mobileNo,  // Add +91 prefix to mobile number
+                MobileNo: '+44' + mobileNo,  // Add +91 prefix to mobile number
                 UserId: user.$id
             }
 
