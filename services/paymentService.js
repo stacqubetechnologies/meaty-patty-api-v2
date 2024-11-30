@@ -39,7 +39,7 @@ exports.createPaymentIntent = async ({ amount, currency }) => {
         const paymentIntent = await stripe.paymentIntents.create({
             amount: totalAmount, // Total amount including service charge
             currency: currency,
-            payment_method_types: ['card', 'paypal'],
+            payment_method_types: ['card'],
         });
 
         // Return the payment intent and additional details
