@@ -6,8 +6,8 @@ const databases = new Databases(client);
 exports.fetchMenu = async () => {
     try {
         const response = await databases.listDocuments(
-            '6743e5aa002d92d243ac',
-            '6743e5b80016f581155a',
+            '674c41e70028ef203de0',
+            '674c4340002982f6210e',
             [
                 Query.limit(100),  // Fetch up to 100 documents
             ]
@@ -72,8 +72,8 @@ exports.createMenu = async (data) => {
         }
 
         const response = await databases.createDocument(
-            '6743e5aa002d92d243ac',
-            '6743e5b80016f581155a',
+            '674c41e70028ef203de0',
+            '674c4340002982f6210e',
             'unique()',
              data,
         );

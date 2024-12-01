@@ -11,8 +11,8 @@ require('dotenv').config();
 exports.getAllOrderDetails = async () => {
     try{
         const response = await databases.listDocuments(
-            '6743e5aa002d92d243ac',
-            '67440c970022594b45e0'
+            '674c41e70028ef203de0',
+            '674c434700220c64805a'
         );
 
         const rawData = response.documents
@@ -121,8 +121,8 @@ function generateOrderHTML(orderData) {
 exports.CreateOrderData = async (data) => {
     try {
         const existingOrderResponse = await databases.listDocuments(
-            '6743e5aa002d92d243ac',
-            '67440c970022594b45e0',
+            '674c41e70028ef203de0',
+            '674c434700220c64805a',
             [Query.equal('OrderID', data.OrderID)]
         );
 
@@ -131,8 +131,8 @@ exports.CreateOrderData = async (data) => {
         }
 
         const response = await databases.createDocument(
-            '6743e5aa002d92d243ac',
-            '67440c970022594b45e0',
+             '674c41e70028ef203de0',
+            '674c434700220c64805a',
             'unique()',
             {
                 CustomerId: data.CustomerId,
@@ -165,8 +165,8 @@ exports.CreateOrderData = async (data) => {
         // Send the email to restaurant
         const mailOptions = {
             from: 'Restaurant Orders" order@meatypatty.in',
-            to: 'meatypattythorne@gmail.com', // Email address of the restaurant
-            // to: 'adithyainfo811@gmail.com', // Email address of the restaurant
+            // to: 'meatypattythorne@gmail.com', // Email address of the restaurant
+            to: 'adithyainfo811@gmail.com', // Email address of the restaurant
             subject: `New Order - ${data.OrderID}`,
             html: emailHTML,
         };
@@ -231,8 +231,8 @@ function generateAndPrintInvoice(orderData, filePath) {
 exports.AddOrderedItems = async (data) => {
 try {
     const response = await databases.createDocument(
-        '6743e5aa002d92d243ac',
-        '67440ee90012e64d8fff',
+        '674c41e70028ef203de0',
+        '674c434f0025e5a3eefb',
         'unique()',
          data,
     );
@@ -249,8 +249,8 @@ exports.getOrdersUserById = async (userId) => {
     try {
         // Query to get orders by customer ID
         const response = await databases.listDocuments(
-            '6743e5aa002d92d243ac', 
-            '67440c970022594b45e0',
+           '674c41e70028ef203de0',
+            '674c434700220c64805a',
             [
                 Query.equal('CustomerId', userId) // Filter orders by CustomerId
             ]
@@ -270,8 +270,8 @@ exports.getOrdersWithItemsByUserId = async (userId) => {
     try {
         // Fetch orders for the user by CustomerId
         const ordersResponse = await databases.listDocuments(
-            '6743e5aa002d92d243ac', // Database ID
-            '67440c970022594b45e0', // Collection ID for Orders
+            '674c41e70028ef203de0',
+            '674c434700220c64805a',
             [Query.equal('CustomerId', userId)]
         );
 
@@ -284,8 +284,8 @@ exports.getOrdersWithItemsByUserId = async (userId) => {
         // Fetch ordered items for each order
         const orderIds = orders.map(order => order.OrderID);
         const orderedItemsResponse = await databases.listDocuments(
-            '6743e5aa002d92d243ac', // Database ID
-            '67440ee90012e64d8fff', // Collection ID for Ordered Items
+            '674c41e70028ef203de0', // Database ID
+            '674c434f0025e5a3eefb', // Collection ID for Ordered Items
             [Query.equal('OrderID', orderIds)]
         );
 

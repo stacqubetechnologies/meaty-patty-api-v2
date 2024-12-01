@@ -12,8 +12,8 @@ exports.createUser = async (email, password, firstName, lastName, mobileNo, post
     try {
         const user = await account.create(ID.unique(), email, password, `${firstName} ${lastName}`);
         await databases.createDocument(
-            '6743e5aa002d92d243ac',
-            '6745e0a1000a7c84f409',
+            '674c41e70028ef203de0',
+            '674c432f000bc3cb992b',
             'unique()',
             {
                 FirstName: firstName,
@@ -25,8 +25,8 @@ exports.createUser = async (email, password, firstName, lastName, mobileNo, post
 
         );
         await databases.createDocument(
-            '6743e5aa002d92d243ac',
-            '67469ff400226044f57d',
+            '674c41e70028ef203de0',
+            '674c433a0008c6609eb9',
             ID.unique(),
             {
                 UserId: user.$id,
@@ -55,8 +55,8 @@ exports.loginUser = async (email, password) => {
 
         // Correct query format with single quotes around the userId value
         const userDetails = await databases.listDocuments(
-            '6743e5aa002d92d243ac',  // Database ID
-            '6745e0a1000a7c84f409',  // Collection ID
+            '674c41e70028ef203de0',
+            '674c432f000bc3cb992b',
         );
 
         const user = userDetails.documents.find(doc => doc.UserId === session.userId)
@@ -98,8 +98,8 @@ exports.addAddress = async (userId, postalCode, houseAppart, city, street) => {
 
     try {
         await databases.createDocument(
-            '6743e5aa002d92d243ac',
-            '67469ff400226044f57d',
+            '674c41e70028ef203de0',
+            '674c433a0008c6609eb9',
             ID.unique(),
             {
                 UserId: userId,
@@ -120,8 +120,8 @@ exports.addAddress = async (userId, postalCode, houseAppart, city, street) => {
 exports.listUserAddresses = async (userId) => {
     try {
         const addressList = await databases.listDocuments(
-            '6743e5aa002d92d243ac',  // Database ID
-            '67469ff400226044f57d'   // Collection ID for addresses
+            '674c41e70028ef203de0',  // Database ID
+            '674c433a0008c6609eb9'   // Collection ID for addresses
         );
 
         // Filter the documents to only include those matching the given UserId
