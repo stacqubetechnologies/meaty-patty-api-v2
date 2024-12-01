@@ -80,10 +80,12 @@ function generateOrderHTML(orderData) {
             </div>
 
             <div class="customer-info">
+                <p><strong>Order Time:</strong> ${new Date().toLocaleTimeString()}</p>
                 <p><strong>Customer Name:</strong> ${orderData.CustomerData.FirstName}  ${orderData.CustomerData.LastName}</p>
                 <p><strong>Email:</strong> ${orderData.CustomerData.Email}</p>
                 <p><strong>Phone:</strong> ${orderData.CustomerData.MobileNo}</p>
                 <p><strong>Delivery Address:</strong> ${orderData.DeliveryAddress}</p>
+                <p><strong>Delivery Method:</strong> ${orderData.OrderType}</p>
             </div>
 
             <div class="items-list">
@@ -142,7 +144,8 @@ exports.CreateOrderData = async (data) => {
                 DeliveryStatus: data.DeliveryStatus,
                 TransactionId: data.TransactionId,
                 TransactionStatus: data.TransactionStatus,
-                OrderID: data.OrderID
+                OrderID: data.OrderID,
+                OrderType:data.OrderType
             }
         );
 

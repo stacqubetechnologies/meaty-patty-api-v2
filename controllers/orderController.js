@@ -2,7 +2,7 @@ const orderService = require('../services/orderService');
 
 exports.createOrder = async (req, res) => {
     try {
-        const { CustomerId, TotalAmount, DeliveryAddress, DeliveryNotes, DeliveryStatus, TransactionId, TransactionStatus,OrderedItems,CustomerData } = req.body;
+        const { CustomerId, TotalAmount, DeliveryAddress, DeliveryNotes, DeliveryStatus, TransactionId, TransactionStatus,OrderedItems,CustomerData,OrderType } = req.body;
         const orderData = {
             CustomerId,
             TotalAmount,
@@ -13,7 +13,8 @@ exports.createOrder = async (req, res) => {
             TransactionStatus,
             OrderID:generateCustomOrderId(),
             OrderedItems,
-            CustomerData
+            CustomerData,
+            OrderType:OrderType
         };
         const orderDetails = await orderService.CreateOrderData(orderData)
         return res.status(201).json({ success: true, order: orderDetails });
