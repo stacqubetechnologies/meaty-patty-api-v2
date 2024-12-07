@@ -40,13 +40,21 @@ function generateOrderHTML(orderData) {
     orderData.OrderedItems.forEach(item => {
         itemsHTML += `
             <tr>
-                <td>${item.FoodItemName}</td>
+                <td>
+                    ${item.FoodItemName}
+                    ${item.SelectedDrink ? `<br><small>Drink: ${item.SelectedDrink}</small>` : ''}
+                    ${item.Sauces && item.Sauces.length > 0 
+                        ? `<br><small>Sauces: ${item.Sauces.join(', ')}</small>` 
+                        : ''}
+                </td>
                 <td>${item.Quantity}</td>
                 <td>£${item.Price}</td>
                 <td>£${item.TotalPrice}</td>
             </tr>
         `;
     });
+    
+    
 
     return `
     <html lang="en">
