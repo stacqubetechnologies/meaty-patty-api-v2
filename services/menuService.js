@@ -48,6 +48,7 @@ exports.fetchMenu = async () => {
                     price: formattedPrice, // Use the formatted price
                     quantity: 0, // Default quantity
                     image: "", // Default or replace with an actual field if available
+                    category
                 });
             }
 
