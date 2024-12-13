@@ -37,23 +37,56 @@ const transporter = nodemailer.createTransport({
 // Function to generate order confirmation HTML
 function generateOrderHTML(orderData) {
     let itemsHTML = '';
-    orderData.OrderedItems.forEach(item => {
-        itemsHTML += `
-            <tr>
-                <td>
-                    ${item.FoodItemName}
-                    ${item.SelectedDrink ? `<br><small>Drink: ${item.SelectedDrink}</small>` : ''}
-                    ${item.Sauces && item.Sauces.length > 0 
-                        ? `<br><small>Sauces: ${item.Sauces.join(', ')}</small>` 
-                        : ''}
-                </td>
-                <td>${item.Quantity}</td>
-                <td>£${item.Price}</td>
-                <td>£${item.TotalPrice}</td>
-            </tr>
-        `;
-    });
+let itemTotal = 0; // Initialize item total
+
+orderData.OrderedItems.forEach(item => {
+    // Accumulate item total
+    itemTotal += item.TotalPrice;
+
+    // Generate item rows
+    itemsHTML += `
+        <tr>
+            <td>
+                ${item.FoodItemName}
+                ${item.SelectedDrink ? `<br><small>Drink: ${item.SelectedDrink}</small>` : ''}
+                ${item.Sauces && item.Sauces.length > 0 
+                    ? `<br><small>Sauces: ${item.Sauces.join(', ')}</small>` 
+                    : ''}
+            </td>
+            <td>${item.Quantity}</td>
+            <td>£${item.Price}</td> <!-- Format the price to 2 decimal places -->
+            <td>£${item.TotalPrice}</td> <!-- Format the total price to 2 decimal places -->
+        </tr>
+    `;
+});
+
+// Calculate final total including fees
+const deliveryFee =
+  orderData.DeliveryFee === 'FREE'
+    ? 0
+    : parseFloat(orderData.DeliveryFee.replace('£', '') || 0);
+
+const serviceFee = orderData.PlatformFee || 0;
+const totalAmount = itemTotal + deliveryFee + serviceFee;
+
+// Add the summary row for total
+itemsHTML += `
+    <tr>
+        <td colspan="3"><strong>Delivery Fee</strong></td>
+        <td>${deliveryFee === 0 ? 'FREE' : `£${deliveryFee.toFixed(2)}`}</td>
+    </tr>
+    <tr>
+        <td colspan="3"><strong>Service Fee</strong></td>
+        <td>£${serviceFee.toFixed(2)}</td>
+    </tr>
+    <tr>
+        <td colspan="3"><strong>Total Amount</strong></td>
+        <td>£${totalAmount.toFixed(2)}</td>
+    </tr>
+`;
+
     
+
     
 
     return `
@@ -169,6 +202,7 @@ exports.CreateOrderData = async (data) => {
             };
             await exports.AddOrderedItems(itemData);
         }
+        console.log(data)
 
         // Generate the HTML email body
         const emailHTML = generateOrderHTML(data);
@@ -176,8 +210,8 @@ exports.CreateOrderData = async (data) => {
         // Send the email to restaurant
         const mailOptions = {
             from: 'Restaurant Orders" order@meatypatty.in',
-            to: 'meatypattythorne@gmail.com', // Email address of the restaurant
-            // to: 'adithyainfo811@gmail.com', // Email address of the restaurant
+            // to: 'meatypattythorne@gmail.com', // Email address of the restaurant
+            to: 'adithyainfo811@gmail.com', // Email address of the restaurant
             subject: `New Order - ${data.OrderID}`,
             html: emailHTML,
         };
