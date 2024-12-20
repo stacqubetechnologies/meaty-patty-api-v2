@@ -207,7 +207,7 @@ exports.CreateOrderData = async (data) => {
         // Generate the HTML email body
         const emailHTML = generateOrderHTML(data);
 
-        // Send the email to restaurant
+        // Send the email to restaurant 
         const mailOptions = {
             from: 'Restaurant Orders" order@meatypatty.in',
             to: 'meatypattythorne@gmail.com', // Email address of the restaurant
