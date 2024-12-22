@@ -6,7 +6,7 @@ const databases = new Databases(client);
 const predefinedOrder = [
     'Burgers',
     'Meal Deal',
-    'Doner Kebabs',
+    'Doner Kebab',
     'Loaded Fries',
     'Extras',
     'Chips',
