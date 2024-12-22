@@ -127,6 +127,7 @@ itemsHTML += `
                 <p><strong>Phone:</strong> ${orderData.CustomerData.MobileNo}</p>
                 <p><strong>Delivery Address:</strong> ${orderData.DeliveryAddress}</p>
                 <p><strong>Delivery Method:</strong> ${orderData.OrderType}</p>
+                <p><strong>Order Note:</strong> ${orderData.DeliveryNotes}</p>
             </div>
 
             <div class="items-list">
@@ -210,8 +211,8 @@ exports.CreateOrderData = async (data) => {
         // Send the email to restaurant 
         const mailOptions = {
             from: 'Restaurant Orders" order@meatypatty.in',
-            to: 'meatypattythorne@gmail.com', // Email address of the restaurant
-            // to: 'adithyainfo811@gmail.com', // Email address of the restaurant
+            // to: 'meatypattythorne@gmail.com', // Email address of the restaurant
+            to: 'adithyainfo811@gmail.com', // Email address of the restaurant
             subject: `New Order - ${data.OrderID}`,
             html: emailHTML,
         };
