@@ -1,4 +1,4 @@
-const { Databases, Account, ID } = require('appwrite');
+const { Databases, Account, ID, Query } = require('appwrite');
 const { client } = require('../config/appwrite');
 const jwt = require('jsonwebtoken');
 const sdk = require('node-appwrite');
@@ -55,12 +55,16 @@ exports.loginUser = async (email, password) => {
 
         // Correct query format with single quotes around the userId value
         const userDetails = await databases.listDocuments(
-            '674c41e70028ef203de0',
-            '674c432f000bc3cb992b',
+            '674c41e70028ef203de0',  
+            '674c432f000bc3cb992b',   
+             [
+                           Query.limit(200), // Fetch up to 100 documents
+                       ]                
         );
+    
 
-        const user = userDetails.documents.find(doc => doc.UserId === session.userId)
-
+       const user = userDetails.documents.find(doc => doc.UserId === session.userId)
+       console.log(user)
 
 
 
@@ -72,7 +76,7 @@ exports.loginUser = async (email, password) => {
             expiry: session.expire,
         },
             process.env.JWT_SECRET,
-            { expiresIn: '1h' });
+            { expiresIn: '24h' });
 
         return { success: true, token, session, user };
     } catch (error) {
@@ -108,7 +112,10 @@ exports.addAddress = async (userId, postalCode, houseAppart, city, street) => {
                 City: city,
                 Street: street,
               
-            }
+            },
+            [
+                Query.limit(200), // Fetch up to 100 documents
+            ]            
         );
         return { success: true };
     } catch (error) {
@@ -121,7 +128,10 @@ exports.listUserAddresses = async (userId) => {
     try {
         const addressList = await databases.listDocuments(
             '674c41e70028ef203de0',  // Database ID
-            '674c433a0008c6609eb9'   // Collection ID for addresses
+            '674c433a0008c6609eb9' ,  // Collection ID for addresses
+            [
+                Query.limit(200), // Fetch up to 100 documents
+            ]            
         );
 
         // Filter the documents to only include those matching the given UserId
