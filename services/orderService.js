@@ -45,20 +45,24 @@ orderData.OrderedItems.forEach(item => {
 
     // Generate item rows
     itemsHTML += `
-        <tr>
-            <td>
-                ${item.FoodItemName}
-                ${item.SelectedDrink ? `<br><small>Drink: ${item.SelectedDrink}</small>` : ''}
-                ${item.Sauces && item.Sauces.length > 0 
-                    ? `<br><small>Sauces: ${item.Sauces.join(', ')}</small>` 
-                    : ''}
-            </td>
-            <td>${item.Quantity}</td>
-            <td>£${item.Price}</td> <!-- Format the price to 2 decimal places -->
-            <td>£${item.TotalPrice}</td> <!-- Format the total price to 2 decimal places -->
-        </tr>
-    `;
-});
+    <tr>
+        <td>
+            ${item.FoodItemName}
+            ${item.SelectedDrink ? `<br><small>Drink: ${item.SelectedDrink}</small>` : ''}
+            ${item.Salads && item.Salads.length > 0 
+                ? `<br><small>Salads: ${item.Salads.join(', ')}</small>` 
+                : ''}
+            ${item.SelectedSauce ? `<br><small>Sauce: ${item.SelectedSauce}</small>` : ''}
+            ${item.selectedSeasoning ? `<br><small>Seasoning: ${item.selectedSeasoning}</small>` : ''}
+        </td>
+        <td>${item.Quantity}</td>
+        <td>£${item.Price}</td> 
+        <td>£${item.TotalPrice}</td> 
+    </tr>
+`;
+
+            })
+
 
 // Calculate final total including fees
 const deliveryFee =
@@ -127,7 +131,7 @@ itemsHTML += `
                 <p><strong>Phone:</strong> ${orderData.CustomerData.MobileNo}</p>
                 <p><strong>Delivery Address:</strong> ${orderData.DeliveryAddress}</p>
                 <p><strong>Delivery Method:</strong> ${orderData.OrderType}</p>
-                <p><strong>Order Note:</strong> ${orderData.DeliveryNotes}</p>
+                <p><strong>Order Note:</strong> ${orderData.DeliveryNotes ? orderData.DeliveryNotes : ''}</p>
             </div>
 
             <div class="items-list">
@@ -226,51 +230,14 @@ exports.CreateOrderData = async (data) => {
         });
 
         // Generate and print the invoice (optional)
-        const invoicePath = `./invoices/Invoice-${response.$id}.pdf`;
-        generateAndPrintInvoice(data, invoicePath);
+        // const invoicePath = `./invoices/Invoice-${response.$id}.pdf`;
+     
 
         return { success: true, order: response };
     } catch (error) {
         console.error('Error creating order:', error);
         throw error;
     }
-};
-
-// Function to generate and print PDF invoice
-function generateAndPrintInvoice(orderData, filePath) {
-    const doc = new PDFDocument();
-    doc.pipe(fs.createWriteStream(filePath));
-
-    doc.fontSize(20).text(`Invoice`, { align: 'center' });
-    doc.text(`Order ID: ${orderData.OrderID}`, 50, 100);
-    doc.text(`Customer ID: ${orderData.CustomerId}`);
-    doc.text(`Delivery Address: ${orderData.DeliveryAddress}`);
-    doc.text(`Total Amount: ${orderData.TotalAmount}`);
-    doc.text(`Transaction Status: ${orderData.TransactionStatus}`);
-
-    doc.moveDown();
-    doc.fontSize(15).text(`Ordered Items:`);
-    orderData.OrderedItems.forEach((item, index) => {
-        doc.text(`${index + 1}. ${item.FoodItemName} - Qty: ${item.Quantity} - $${item.TotalPrice}`);
-    });
-
-    doc.end();
-
-    // Print the PDF automatically
-    doc.on('finish', () => {
-        const printerInstance = printer.getDefaultPrinterName();
-        console.log(printerInstance)
-        printer.printFile({
-            filename: filePath,
-            printer: printerInstance,
-            success: () => {
-                console.log('Print job sent successfully.');
-            },
-            error: (err) => {
-                console.error('Error in printing:', err);
-            }
-        });
-    });
 }
 
 
@@ -298,7 +265,8 @@ exports.getOrdersUserById = async (userId) => {
            '674c41e70028ef203de0',
             '674c434700220c64805a',
             [
-                Query.equal('CustomerId', userId) // Filter orders by CustomerId
+                Query.equal('CustomerId', userId), // Filter orders by CustomerId
+                Query.limit(10000),
             ]
         );
 
@@ -318,7 +286,7 @@ exports.getOrdersWithItemsByUserId = async (userId) => {
         const ordersResponse = await databases.listDocuments(
             '674c41e70028ef203de0',
             '674c434700220c64805a',
-            [Query.equal('CustomerId', userId)]
+            [Query.equal('CustomerId', userId),Query.limit(1000)]
         );
 
         const orders = ordersResponse.documents;
@@ -332,7 +300,8 @@ exports.getOrdersWithItemsByUserId = async (userId) => {
         const orderedItemsResponse = await databases.listDocuments(
             '674c41e70028ef203de0', // Database ID
             '674c434f0025e5a3eefb', // Collection ID for Ordered Items
-            [Query.equal('OrderID', orderIds)]
+            [Query.equal('OrderID', orderIds),  Query.limit(1000),Query.orderDesc('$createdAt') ]
+
         );
 
         const orderedItems = orderedItemsResponse.documents;
