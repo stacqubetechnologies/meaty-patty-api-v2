@@ -41,36 +41,22 @@ function generateOrderHTML (orderData) {
 
     // Generate item rows
     itemsHTML += `
-        <tr>
-            <td>
-                ${item.FoodItemName}
-                ${
-                  item.SelectedDrink
-                    ? `<br><small>Drink: ${item.SelectedDrink}</small>`
-                    : ''
-                }
-                ${
-                  item.Salads && item.Salads.length > 0
-                    ? `<br><small>Salads: ${item.Salads.join(', ')}</small>`
-                    : ''
-                }
-                ${
-                  item.SelectedSauce
-                    ? `<br><small>Sauce: ${item.SelectedSauce}</small>`
-                    : ''
-                }
-                ${
-                  item.selectedSeasoning
-                    ? `<br><small>Seasoning: ${item.selectedSeasoning}</small>`
-                    : ''
-                }
-            </td>
-            <td>${item.Quantity}</td>
-            <td>£${item.Price}</td>
-            <td>£${item.TotalPrice}</td>
-        </tr>
-        `
-  })
+         <tr>
+        <td>
+            ${item.FoodItemName}
+            ${item.SelectedDrink ? `<br><small>Drink: ${item.SelectedDrink}</small>` : ''}
+            ${item.Salads && item.Salads.length > 0 
+                ? `<br><small>Salads: ${item.Salads.join(', ')}</small>` 
+                : ''}
+            ${item.SelectedSauce ? `<br><small>Sauce: ${item.SelectedSauce}</small>` : ''}
+            ${item.selectedSeasoning ? `<br><small>Seasoning: ${item.selectedSeasoning}</small>` : ''}
+        </td>
+        <td>${item.Quantity}</td>
+        <td>£${item.Price}</td> 
+        <td>£${item.TotalPrice}</td> 
+    </tr>
+`;
+            })
 
   // Calculate final total including fees
   const deliveryFee =
@@ -231,14 +217,12 @@ exports.CreateOrderData = async data => {
 
     // Send the email to restaurant
     const mailOptions = {
-      from: '"Restaurant Orders" <order@meatypatty.in>',
-      to:
-        process.env.NODE_ENV === 'production'
-          ? process.env.SMTP_EMAIL_PROD // Use the production email in production
-          : process.env.SMTP_EMAIL_DEV, // Use the development email in non-production
+      from: 'Restaurant Orders" order@meatypatty.in',
+      to: 'meatypattythorne@gmail.com', // Email address of the restaurant
+      // to: 'adithyainfo811@gmail.com', // Email address of the restaurant
       subject: `New Order - ${data.OrderID}`,
-      html: emailHTML
-    }
+      html: emailHTML,
+  };
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
