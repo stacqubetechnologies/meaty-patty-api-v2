@@ -408,7 +408,7 @@ exports.getOrdersUserById = async userId => {
       '674c434700220c64805a',
       [
         Query.equal('CustomerId', userId), // Filter orders by CustomerId
-        Query.limit(10000)
+        Query.limit(200000)
       ]
     )
 
@@ -425,7 +425,7 @@ exports.getOrdersWithItemsByUserId = async userId => {
     const ordersResponse = await databases.listDocuments(
       '674c41e70028ef203de0',
       '674c434700220c64805a',
-      [Query.equal('CustomerId', userId), Query.limit(1000)]
+      [Query.equal('CustomerId', userId), Query.limit(200000)]
     )
 
     const orders = ordersResponse.documents
@@ -445,7 +445,7 @@ exports.getOrdersWithItemsByUserId = async userId => {
       '674c434f0025e5a3eefb',
       [
         Query.equal('OrderID', orderIds),
-        Query.limit(1000),
+        Query.limit(200000),
         Query.orderDesc('$createdAt')
       ]
     )
