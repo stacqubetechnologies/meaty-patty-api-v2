@@ -217,7 +217,7 @@ exports.CreateOrderData = async data => {
 
     // Send the email to the restaurant
     const restaurantMailOptions = {
-      from: 'Restaurant Orders" order@meatypatty.in',
+      from: 'Meaty Patty New Order" order@meatypatty.in',
       to: 'meatypattythorne@gmail.com', // Email address of the restaurant
       // to:'adithyainfo811@gmail.com',
       subject: `New Order - ${data.OrderID}`,
@@ -237,7 +237,7 @@ exports.CreateOrderData = async data => {
 
     // Send the email to the customer
     const customerMailOptions = {
-      from: 'Restaurant Orders" order@meatypatty.in',
+      from: 'Meaty Patty - Restaurent" order@meatypatty.in',
       to: data.CustomerData.Email, // Customer's email address
       subject: `Order Confirmation - ${data.OrderID}`,
       html: customerEmailHTML,
