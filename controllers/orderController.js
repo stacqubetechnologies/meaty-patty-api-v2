@@ -14,7 +14,8 @@ exports.createOrder = async (req, res) => {
       CustomerData,
       OrderType,
       DeliveryFee,
-      PlatformFee
+      PlatformFee,
+      CustomerEmail
     } = req.body
     const orderData = {
       CustomerId,
@@ -29,7 +30,8 @@ exports.createOrder = async (req, res) => {
       CustomerData,
       OrderType: OrderType,
       DeliveryFee,
-      PlatformFee
+      PlatformFee,
+      
     }
     const orderDetails = await orderService.CreateOrderData(orderData)
     return res.status(201).json({ success: true, order: orderDetails })
