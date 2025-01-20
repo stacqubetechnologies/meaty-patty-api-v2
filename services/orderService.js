@@ -210,8 +210,6 @@ exports.CreateOrderData = async data => {
       await exports.AddOrderedItems(itemData);
     }
 
-    console.log(data);
-
     // Generate the HTML email body for the restaurant
     const restaurantEmailHTML = generateOrderHTML(data);
 
