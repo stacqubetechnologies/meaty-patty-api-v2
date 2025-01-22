@@ -156,7 +156,7 @@ function generateOrderHTML (orderData) {
             </div>
 
             <div class="footer">
-                <p>If you have any questions, feel free to contact us at <a href="mailto:order@meatypatty.in">order@meatypatty.in</a>.</p>
+                <p>If you have any questions, feel free to contact us at <a href="mailto:order@meatypatty.co.uk">order@meatypatty.co.uk</a>.</p>
                 <p>Thank you for choosing our restaurant!</p>
             </div>
         </div>
@@ -215,7 +215,7 @@ exports.CreateOrderData = async data => {
 
     // Send the email to the restaurant
     const restaurantMailOptions = {
-      from: 'Meaty Patty New Order" order@meatypatty.in',
+      from: 'Meaty Patty New Order" order@meatypatty.co.uk',
       to: 'meatypattythorne@gmail.com', // Email address of the restaurant
       // to:'adithyainfo811@gmail.com',
       subject: `New Order - ${data.OrderID}`,
@@ -235,7 +235,7 @@ exports.CreateOrderData = async data => {
 
     // Send the email to the customer
     const customerMailOptions = {
-      from: 'Meaty Patty - Restaurent" order@meatypatty.in',
+      from: 'Meaty Patty - Restaurent" order@meatypatty.co.uk',
       to: data.CustomerData.Email, // Customer's email address
       subject: `Order Confirmation - ${data.OrderID}`,
       html: customerEmailHTML,
